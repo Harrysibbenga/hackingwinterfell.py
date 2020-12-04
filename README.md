@@ -1,4 +1,4 @@
-* Requirement
+# Requirements
 
  Having had a restless nights sleep, you’ ve woken up in a daze and have found yourself in Westeros.Confused, the sun is just beginning to rise and yet in the distance, you can hear crowds jeering, roaring battle cries and a stampede of horses charging into what seems like a long - awaited battle.
 
