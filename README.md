@@ -57,7 +57,7 @@
  string result(formatted as army_name | turns)
 
  EXAMPLE 1
- Input: "Seven Kingdom Army", 5, 4
+ Input: "Seven Kingdom Army", 4, 5
  Output: White Walker Army | 6
 
  EXAMPLE 2

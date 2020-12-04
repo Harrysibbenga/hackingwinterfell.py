@@ -81,29 +81,34 @@ def attack(attack_army, defence_army):
     print(attack_army)
     print(defence_army)
 
-    if defence_army.high_defence() > 0:
+    attack = attack_army.attack_strength()
+    high_def = defence_army.high_defence()
+    low_def = defence_army.low_defence()
 
-        if attack_army.attack_strength() >= defence_army.high_defence():
+    if high_def > 0:
+
+        if attack >= high_def:
             # remove all dead high troops
             defence_army.high_dead('all')
             # calculate dead
-            if (attack_army.attack_strength() - defence_army.high_defence()) >= defence_army.low_troop_defence:
-                dead = math.floor(
-                    (attack_army.attack_strength() - defence_army.high_defence()) / defence_army.low_troop_defence)
+            diff = attack - high_def
+
+            if diff >= defence_army.low_troop_defence:
+                dead = math.floor(diff / defence_army.low_troop_defence)
                 # remove dead from remaining low troops
                 defence_army.low_dead(dead)
                 print(dead)
 
-        elif defence_army.high_defence() > attack_army.attack_strength():
+        elif high_def > attack:
             # calculate high dead
-            high_dead = math.floor(attack_army.attack_strength() /
+            high_dead = math.floor(attack /
                                    defence_army.high_troop_defence)
             # remove dead from remaining high troops
             defence_army.high_dead(high_dead)
 
             print(high_dead)
 
-            diff = attack_army.attack_strength() - (high_dead * defence_army.high_troop_defence)
+            diff = attack - (high_dead * defence_army.high_troop_defence)
 
             if diff >= defence_army.low_troop_defence:
                 # calculate low dead
@@ -113,15 +118,15 @@ def attack(attack_army, defence_army):
 
                 print(low_dead)
 
-    elif defence_army.high_defence() <= 0:
+    elif high_def <= 0:
 
-        if attack_army.attack_strength() >= defence_army.low_defence():
+        if attack >= low_def:
             # remove all dead high troops
             defence_army.low_dead('all')
 
-        elif attack_army.attack_strength() >= defence_army.low_troop_defence:
+        elif attack >= defence_army.low_troop_defence:
             # calculate dead
-            dead = math.floor(attack_army.attack_strength() /
+            dead = math.floor(attack /
                               defence_army.low_troop_defence)
             # remove dead from remaining high troops
             defence_army.low_dead(dead)
@@ -169,6 +174,7 @@ def run(first_strike_army_name, no_of_dragons, no_of_lords):
                 print(f'Seven Kingdom Army | {turn}')
 
             print(first_strike_army_name, turn)
+
             while retaliate:
                 turn += 1
                 print(retaliate, turn)
@@ -187,6 +193,7 @@ def run(first_strike_army_name, no_of_dragons, no_of_lords):
                 elif retaliate == 'Seven Kingdom Army':
                     attack(kingdom_army, walker_army)
                     has_troops = check_if_army_has_troops(walker_army)
+
                     if has_troops:
                         retaliate = "White Walker Army"
 
@@ -194,7 +201,7 @@ def run(first_strike_army_name, no_of_dragons, no_of_lords):
                         print(f'Seven Kingdom Army | {turn}')
                         break
 
-        elif first_strike_army_name == 'White Walker Army':
+        elif first_strike_army_name.lower() == 'white walker army':
 
             attack(walker_army, kingdom_army)
 
@@ -203,24 +210,15 @@ def run(first_strike_army_name, no_of_dragons, no_of_lords):
             if has_troops:
                 retaliate = 'Seven Kingdom Army'
             else:
-                print(f'Seven Kingdom Army | {turn}')
+                print(f'White Walker Army | {turn}')
+
+            print(first_strike_army_name, turn)
 
             while retaliate:
                 turn += 1
+                print(retaliate, turn)
 
-                if retaliate == "White Walker Army":
-
-                    attack(walker_army, kingdom_army)
-
-                    has_troops = check_if_army_has_troops(kingdom_army)
-
-                    if has_troops:
-                        retaliate = 'Seven Kingdom Army'
-                    else:
-                        print(f'White Walker Army | {turn}')
-                        break
-
-                elif retaliate == 'Seven Kingdom Army':
+                if retaliate == 'Seven Kingdom Army':
 
                     attack(kingdom_army, walker_army)
 
@@ -232,5 +230,17 @@ def run(first_strike_army_name, no_of_dragons, no_of_lords):
                         print(f'Seven Kingdom Army | {turn}')
                         break
 
+                elif retaliate == "White Walker Army":
 
-run('Seven Kingdom Army', 5, 4)  # White Walker Army | 6
+                    attack(walker_army, kingdom_army)
+
+                    has_troops = check_if_army_has_troops(kingdom_army)
+
+                    if has_troops:
+                        retaliate = 'Seven Kingdom Army'
+                    else:
+                        print(f'White Walker Army | {turn}')
+                        break
+
+
+run('Seven Kingdom Army', 4, 1)  # White Walker Army | 6
